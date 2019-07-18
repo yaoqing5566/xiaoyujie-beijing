@@ -30,6 +30,7 @@ a {
     -webkit-transition: left .3s ease-in-out;
     transition: left .3s ease-in-out;
     background: #f0f0f0;
+    /*background:#cdf1fd url("../img/bg.jpg") no-repeat right bottom; background-size: cover ;*/
 }
 
 .content {
