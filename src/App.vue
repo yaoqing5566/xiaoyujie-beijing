@@ -40,10 +40,7 @@ export default {
     margin:0  15px 0 0
   }
   #app  .el-radio{ padding-bottom: 12px; margin-right: 15px}
-  .tags-li.active,.el-button--primary,.el-button--primary:focus, .el-button--primary:hover {
-    border: 1px solid #f791a3;
-    background-color: #f4a2b0;
-  }
+
   .el-tag{
     color: #ffa2b2;    background-color: rgb(255, 239, 242);border: 1px solid rgb(244, 162, 176)
   }

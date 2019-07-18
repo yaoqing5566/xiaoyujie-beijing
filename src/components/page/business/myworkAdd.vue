@@ -201,7 +201,7 @@
 </template>
 <style>
   .my-ywxz {
-    color: #ff869b
+  font-weight: bold;
   }
   .ganggao .el-input-group__append, .ganggao .el-input-group__prepend {
     padding: 0 10px

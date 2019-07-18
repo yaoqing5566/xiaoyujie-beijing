@@ -128,7 +128,7 @@
         height: 70px;
         font-size: 22px;
         color: #fff;
-        background-color: #f4a2b0;
+        background-color: #86dbf7;
     }
 
     .collapse-btn{
