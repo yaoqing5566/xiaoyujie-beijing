@@ -21,7 +21,11 @@
       <el-table :data="tableData" border>
         <el-table-column prop="work_number" label="工作单号" width="130"></el-table-column>
         <el-table-column prop="creat_time" label="日期" width="140" :formatter="formatDate"></el-table-column>
-        <el-table-column prop="supplier_name" label="用户" width="120"></el-table-column>
+        <el-table-column  label="用户" width="120">
+          <template slot-scope="scope">
+            {{scope.row.supplier_name?scope.row.supplier_name:scope.row.user_name}}
+          </template>
+        </el-table-column>
         <el-table-column prop="ip" label="IP" width="120"></el-table-column>
         <el-table-column prop="behavior" label="行为"></el-table-column>
         <el-table-column prop="log_remarks" label="描述"></el-table-column>
