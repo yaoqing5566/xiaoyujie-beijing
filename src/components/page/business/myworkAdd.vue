@@ -168,7 +168,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="联络人">
-            <el-input v-model="saveData2.liaison"></el-input>
+            <el-autocomplete style="width: 100%" class="inline-input" @select="handleSelect2" :fetch-suggestions="querySearchAsync" v-model="saveData2.liaison"></el-autocomplete>
           </el-form-item>
           <el-form-item label="电话">
             <el-input v-model="saveData2.phone"></el-input>
@@ -237,6 +237,8 @@
           ]
         },
         restaurants: [],
+        restaurants2:[],
+        timeout:  null,
         saveData2: {
           work_nature:[],//工作性质
           name:'',
@@ -291,14 +293,14 @@
         this.stepActive=parseInt(this.$route.query.stepActive);
       }
       let _this=this;
-      $_get('/Views/admin/business/readWork.aspx?pageIndex=1&pageSize=0&workNumber=&name=&cName=&fName=&offer=1').then(function (response) {
-        if(response.code==1){
-          _this.count=response.data.count;
-
-        }else {
-          _this.$message.error(response.msg);
-        }
-      })
+      // $_get('/Views/admin/business/readWork.aspx?pageIndex=1&pageSize=0&workNumber=&name=&cName=&fName=&offer=1').then(function (response) {
+      //   if(response.code==1){
+      //     _this.count=response.data.count;
+      //
+      //   }else {
+      //     _this.$message.error(response.msg);
+      //   }
+      // })
 
 
     },
@@ -341,6 +343,8 @@
             _this.saveData2.address=da.address;
             _this.saveData2.qq=da.qq;
             _this.saveData2.msn=da.msn;
+            _this.getCurData(_this.saveData.customer_id);
+
           } else {
             _this.$message.error(response.msg);
           }
@@ -354,6 +358,50 @@
           }
         }
         return false;
+      },
+      querySearchAsync(queryString, cb) {
+        let _this=this;
+        let restaurants =_this.restaurants2.arrs;
+        let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+        cb(results);
+      },
+      createStateFilter(queryString) {
+        return (state) => {
+          return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      getCurData(id){
+        let _this=this;
+        _this.restaurants2={
+          address:'',
+          arrs:[]
+        };
+        if(this.stepActive==1){
+          $_get('/Views/admin/getByIdDetail.aspx?T=customer&id='+id).then(function (response) {
+            if(response.code==1){
+              let data=response.data[0];
+                let arrs=JSON.parse(data.other_contacts)
+                for(let i in arrs){
+                    if(arrs[i].name){
+                      arrs[i].value=arrs[i].name;
+                      _this.restaurants2.arrs.push(arrs[i])
+                    }
+                }
+              _this.restaurants2.arrs.unshift({
+                value:data.key_contacts,
+                email:data.email,
+                mobil:data.mobile,
+                phone:data.phone,
+                qq:data.qq,
+                we_chat:data.we_chat,
+              })
+
+              _this.restaurants2.address=data.address
+            }else {
+              _this.$message.error(response.msg);
+            }
+          })
+        }
       },
       submitForm(saveData) {
         let _this=this;
@@ -401,6 +449,7 @@
                   _this.addLog('新增工作单','新增工作单');
                 }
                 _this.saveData2.name=_this.saveData.name;
+                _this.getCurData(_this.saveData.customer_id);
                 //_this.$message.success('操作成功');
               }else {
                 _this.$message.error(response.msg);
@@ -457,11 +506,20 @@
         $_get('/Views/admin/business/getCustomerNumber.aspx').then(function (response) {
           if(response.code==1){
             _this.restaurants=response.data.list
+
           }else {
             _this.$message.error(response.msg);
           }
         })
 
+      },
+      handleSelect2(item){
+        this.saveData2.phone=item.phone;
+        this.saveData2.mobile=item.mobil;
+        this.saveData2.email=item.email;
+        this.saveData2.address=this.restaurants2.address;
+        this.saveData2.qq=item.qq;
+        this.saveData2.msn=item.we_chat;
       },
       handleSelect(item) {
         let d=this.judgeRestaurants(item);
