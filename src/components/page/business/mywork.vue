@@ -130,6 +130,13 @@
               <el-date-picker style="width: 100%" v-model="select.date" type="daterange"  range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
             </el-form-item>
           </el-col>
+          <el-col :span="24">
+            <el-form-item label="性质">
+              <el-select v-model="select.nature" placeholder="性质" class="handle-select mr10" style="width: 100%">
+                <el-option v-for="(items,index) in config.workNature" :key="index" :label="items" :value="index"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
 
           <el-col :span="24" class="my-work-check">
             <el-form-item label="状态" style=" margin-bottom: 8px">
@@ -140,10 +147,10 @@
           </el-col>
           <el-col :span="24" class="my-work-check">
             <el-form-item label="其他选项">
-                <el-checkbox  @change="handleCheckedAddChange" v-model="select.isAddMe">由我创建</el-checkbox>
-                <el-checkbox v-model="select.offerChecked">价格未确认</el-checkbox>
-                <!--<el-checkbox label="5" style="margin-left: 0px">进入应收款</el-checkbox>-->
-                <!--<el-checkbox label="6">奖金设立未建立应收款</el-checkbox>-->
+              <el-checkbox  @change="handleCheckedAddChange" v-model="select.isAddMe">由我创建</el-checkbox>
+              <el-checkbox v-model="select.offerChecked">价格未确认</el-checkbox>
+              <!--<el-checkbox label="5" style="margin-left: 0px">进入应收款</el-checkbox>-->
+              <!--<el-checkbox label="6">奖金设立未建立应收款</el-checkbox>-->
 
             </el-form-item>
           </el-col>
@@ -178,6 +185,7 @@
           cName:'',//客户
           fName:'',//制片
           liaison:'',//联系人
+          nature:'',//性质
           date:'',
           state:[],
           isAddMe:false,//由我创建
@@ -210,7 +218,7 @@
     },
     filters:{
       formatBusiness(row){
-       // console.log(row)
+        // console.log(row)
         let d=JSON.parse(row.business_nature);
         let str='';
         for (let key in d){
@@ -231,14 +239,15 @@
         sessionStorage.removeItem("myworkSelect");
         this.select={
           number:'',
-            name:'',
-            cName:'',//客户
-            fName:'',//制片
-            liaison:'',//联系人
-            date:'',
-            state:[],
-            isAddMe:false,//由我创建
-            offerChecked:false
+          name:'',
+          cName:'',//客户
+          fName:'',//制片
+          liaison:'',//联系人
+          nature:'',//性质
+          date:'',
+          state:[],
+          isAddMe:false,//由我创建
+          offerChecked:false
         }
         this.getData();
       },
@@ -336,7 +345,7 @@
         let offer=this.select.offerChecked?0:1;
         let _this=this;
         $_get('/Views/admin/business/readWork.aspx?pageIndex='+_this.pageIndex+'&pageSize='+_this.pageSize+
-          '&workNumber='+_this.select.number+'&name='+_this.select.name+'&cName='+_this.select.cName+'&fName='+_this.select.fName+'&liaison='+_this.select.liaison+'&offer='+offer+date+state).then(function (response) {
+          '&workNumber='+_this.select.number+'&name='+_this.select.name+'&cName='+_this.select.cName+'&fName='+_this.select.fName+'&liaison='+_this.select.liaison+'&nature='+_this.select.nature+'&offer='+offer+date+state).then(function (response) {
           if(response.code==1){
             _this.tableData=response.data.list;
             _this.count=response.data.count;
@@ -378,7 +387,7 @@
 </script>
 
 <style>
- .my-work .el-table .warning-row {
+  .my-work .el-table .warning-row {
     background: #f6faff;
   }
   .handle-box {
