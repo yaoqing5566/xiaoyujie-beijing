@@ -56,7 +56,12 @@
                     </tr>
                     <tr><td><div class="cell">片名：{{tableData.name}}</div></td></tr>
                     <tr><td><div class="cell">篇名：{{tableData.gz_title}}</div></td></tr>
-                    <tr><td><div class="cell">长度：{{tableData.gz_size[0]}}小时{{tableData.gz_size[1]}}分钟{{tableData.gz_size[2]}}秒</div></td></tr>
+                    <tr>
+                      <td>
+                        <div class="cell">长度：{{tableData.gz_size[0]}}小时{{tableData.gz_size[1]}}分钟{{tableData.gz_size[2]}}秒   <el-button style="float: right" plain size="mini" type="primary"  @click="lenVisible=true">查看其他广告</el-button></div>
+
+                      </td>
+                    </tr>
                     </tbody>
                     <tbody v-else-if="typeKey=='mv'">
                     <tr>
@@ -78,7 +83,11 @@
                       </td>
                     </tr>
                     <tr><td><div class="cell">片名：{{tableData.name}}</div></td></tr>
-                    <tr><td><div class="cell">长度：{{tableData.gz_size[0]}}小时{{tableData.gz_size[1]}}分钟{{tableData.gz_size[2]}}秒</div></td></tr>
+                    <tr>
+                      <td>
+                        <div class="cell">长度：{{tableData.gz_size[0]}}小时{{tableData.gz_size[1]}}分钟{{tableData.gz_size[2]}}秒</div>
+                      </td>
+                    </tr>
                     </tbody>
                     <tbody v-else-if="typeKey=='record'">
                     <tr>
@@ -107,17 +116,17 @@
 
                     <!--报价单-->
                     <tbody v-if="tableData.state>0&&$store.state.userInfo.type==1" >
-                      <tr>
-                        <td style="background: #fafafa;">
-                          <div class="cell">
-                            <strong>报价单</strong>
-                            <div style="float: right">
-                              <el-button plain size="mini" type="primary"  @click="editQuotation">管理</el-button>
-                            </div>
+                    <tr>
+                      <td style="background: #fafafa;">
+                        <div class="cell">
+                          <strong>报价单</strong>
+                          <div style="float: right">
+                            <el-button plain size="mini" type="primary"  @click="editQuotation">管理</el-button>
                           </div>
-                        </td>
-                      </tr>
-                      <tr v-for="item in quotationList"><td><div class="cell">版本号:{{item.version_number}}&nbsp;&nbsp;&nbsp;总价:{{item.total_price}}<span v-if="item.type==1" style="margin-left: 10px; color: #0f74a8" class="el-icon-success"></span></div></td></tr>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr v-for="item in quotationList"><td><div class="cell">版本号:{{item.version_number}}&nbsp;&nbsp;&nbsp;总价:{{item.total_price}}<span v-if="item.type==1" style="margin-left: 10px; color: #0f74a8" class="el-icon-success"></span></div></td></tr>
                     </tbody>
                     <!--报价单end-->
 
@@ -144,14 +153,14 @@
                               <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" width="100%"
                                      style="table-layout: inherit">
                                 <tbody>
-                                  <tr>
-                                    <th><div class="cell">人员</div></th>
-                                    <th><div class="cell">时间</div></th>
-                                    <th><div class="cell">录音室</div></th>
-                                    <th><div class="cell">类型</div></th>
-                                    <th><div class="cell">备注</div></th>
-                                    <th><div class="cell">工作内容</div></th>
-                                  </tr>
+                                <tr>
+                                  <th><div class="cell">人员</div></th>
+                                  <th><div class="cell">时间</div></th>
+                                  <th><div class="cell">录音室</div></th>
+                                  <th><div class="cell">类型</div></th>
+                                  <th><div class="cell">备注</div></th>
+                                  <th><div class="cell">工作内容</div></th>
+                                </tr>
                                 <tr v-for="item in scheduling">
                                   <td><div class="cell">{{item.cms_supplier_name}}</div></td>
                                   <td>
@@ -209,50 +218,50 @@
 
                     <!--供应方-->
                     <tbody v-if="tableData.state>0">
-                      <tr>
-                        <td style="background: #fafafa;">
-                          <div class="cell">
-                            <strong>供应方</strong>
-                            <div style="float: right">
-                              <el-button plain size="mini" type="primary" @click="payable">费用</el-button>
-                              <el-button plain size="mini" type="primary" @click="setSupplier">设定</el-button>
+                    <tr>
+                      <td style="background: #fafafa;">
+                        <div class="cell">
+                          <strong>供应方</strong>
+                          <div style="float: right">
+                            <el-button plain size="mini" type="primary" @click="payable">费用</el-button>
+                            <el-button plain size="mini" type="primary" @click="setSupplier">设定</el-button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="cell">
+                          <div class="el-table el-table--fit el-table--border el-table--scrollable-x el-table--enable-row-hover el-table--enable-row-transition el-table--small" style="width:100%;">
+                            <div class="el-table__body-wrapper is-scrolling-left">
+                              <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" width="100%">
+                                <tbody>
+                                <tr>
+                                  <th><div class="cell">身份</div></th>
+                                  <th><div class="cell">名称</div></th>
+                                  <th><div class="cell">手机</div></th>
+                                  <th><div class="cell">工作内容</div></th>
+                                  <th><div class="cell" style="text-align: right">费用</div></th>
+                                </tr>
+                                <tr v-for="item in workSupplier" v-if="item.payable_state!=3">
+                                  <td><div class="cell">{{item.identity}}</div></td>
+                                  <td><div class="cell">{{item.supplier_name}}</div></td>
+                                  <td><div class="cell">{{item.supplier_mobile}}</div></td>
+                                  <td><div class="cell">{{item.job_content}}</div></td>
+                                  <td><div class="cell" style="text-align: right">{{item.payable_cost}}</div></td>
+                                </tr>
+                                <tr>
+                                  <td><div class="cell">合计</div></td>
+                                  <td colspan="4"><div class="cell" style="text-align: right">{{workSupplierTotal}}</div></td>
+                                </tr>
+                                </tbody>
+                              </table>
                             </div>
                           </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="cell">
-                            <div class="el-table el-table--fit el-table--border el-table--scrollable-x el-table--enable-row-hover el-table--enable-row-transition el-table--small" style="width:100%;">
-                              <div class="el-table__body-wrapper is-scrolling-left">
-                                <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" width="100%">
-                                  <tbody>
-                                  <tr>
-                                    <th><div class="cell">身份</div></th>
-                                    <th><div class="cell">名称</div></th>
-                                    <th><div class="cell">手机</div></th>
-                                    <th><div class="cell">工作内容</div></th>
-                                    <th><div class="cell" style="text-align: right">费用</div></th>
-                                  </tr>
-                                  <tr v-for="item in workSupplier" v-if="item.payable_state!=3">
-                                    <td><div class="cell">{{item.identity}}</div></td>
-                                    <td><div class="cell">{{item.supplier_name}}</div></td>
-                                    <td><div class="cell">{{item.supplier_mobile}}</div></td>
-                                    <td><div class="cell">{{item.job_content}}</div></td>
-                                    <td><div class="cell" style="text-align: right">{{item.payable_cost}}</div></td>
-                                  </tr>
-                                  <tr>
-                                    <td><div class="cell">合计</div></td>
-                                    <td colspan="4"><div class="cell" style="text-align: right">{{workSupplierTotal}}</div></td>
-                                  </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
 
-                          </div>
-                        </td>
-                      </tr>
+                        </div>
+                      </td>
+                    </tr>
                     </tbody>
                     <!--供应方end-->
 
@@ -295,18 +304,18 @@
                     </tbody>
 
                     <tbody v-for="da in contacts">
-                      <tr>
-                        <td style="border-top:2px solid #ebeef5"><div class="cell">身份：{{da.identity}}</div></td>
-                      </tr>
-                      <tr>
-                        <td><div class="cell">联系人：{{da.name}}</div></td>
-                      </tr>
-                      <tr>
-                        <td><div class="cell">手机：{{da.mobile}}</div></td>
-                      </tr>
-                      <tr>
-                        <td><div class="cell">Email：{{da.email}}</div></td>
-                      </tr>
+                    <tr>
+                      <td style="border-top:2px solid #ebeef5"><div class="cell">身份：{{da.identity}}</div></td>
+                    </tr>
+                    <tr>
+                      <td><div class="cell">联系人：{{da.name}}</div></td>
+                    </tr>
+                    <tr>
+                      <td><div class="cell">手机：{{da.mobile}}</div></td>
+                    </tr>
+                    <tr>
+                      <td><div class="cell">Email：{{da.email}}</div></td>
+                    </tr>
                     </tbody>
 
                     <tbody>
@@ -420,11 +429,34 @@
                 <el-button type="primary" @click="deleteRow">确 定</el-button>
             </span>
     </el-dialog>
+
+
+    <!-- 添加广告长度 -->
+    <el-dialog :close-on-click-modal="false" title="添加长度" :visible.sync="lenVisible" width="490px" >
+      <div style="padding-bottom: 10px" v-for="(item,index) in bz_time">
+        <el-input placeholder="0" v-model="item.h" style="width: 120px">
+          <template slot="append" style="padding: 0px">小时</template>
+        </el-input>
+        <el-input placeholder="0" v-model="item.m" style="width: 120px">
+          <template slot="append">分钟</template>
+        </el-input>
+        <el-input placeholder="0" v-model="item.s" style="width: 120px">
+          <template slot="append">秒</template>
+        </el-input>
+        <el-button plain size="mini" type="danger" @click="deleteGzLength(index, item)">删除</el-button>
+      </div>
+      <el-button type="primary" @click="addPushLength()">添加一个</el-button>
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="lenVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitFormGg()">保存</el-button>
+            </span>
+    </el-dialog>
+
   </div>
 </template>
 <style>
- .manageMyWork .el-table tr:hover{  background: #fff;}
- .myWork .el-dialog__body{padding-top: 0px}
+  .manageMyWork .el-table tr:hover{  background: #fff;}
+  .myWork .el-dialog__body{padding-top: 0px}
   .my-ywxz {
     color: #ff869b
   }
@@ -439,6 +471,7 @@
     data() {
       vm=this;
       return {
+        bz_time:[],
         tableData:{
           gz_size:["","",""]
         },
@@ -461,6 +494,7 @@
         workId:'',
         otherContacts:false,
         delVisible:false,
+        lenVisible:false,
         designatedVisible:false,
         supplierList:[],
         scheduling:[],
@@ -540,6 +574,30 @@
       }
     },
     methods: {
+      deleteGzLength(index,item){
+        this.bz_time.splice(index,1);
+      },
+      addPushLength(){
+        this.bz_time.push({
+          h:'',
+          m:'',
+          s:''
+        })
+      },
+      submitFormGg(){
+        let _this=this;
+        let save2={
+          data:JSON.stringify({bz_time:JSON.stringify(_this.bz_time)}),
+          id:this.workId
+        }
+        $_post('/Views/admin/business/updateWork.aspx',save2).then(function (response) {
+          if(response.code==1){
+            _this.$message.success('添加成功');
+          }else {
+            _this.$message.error(response.msg);
+          }
+        })
+      },
       getDesignated(){
         let _this=this;
         $_get('/Views/admin/business/getScheduling.aspx?workId=' + _this.workId).then(function (response) {
@@ -680,7 +738,9 @@
           if (response.code == 1) {
             var da = response.data[0];
             _this.tableData=da;
-
+            if(_this.tableData.bz_time){
+              _this.bz_time=JSON.parse(_this.tableData.bz_time)
+            }
             if(_this.tableData.gz_size){
               _this.tableData.gz_size=JSON.parse(_this.tableData.gz_size)
             }else {
