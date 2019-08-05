@@ -158,7 +158,7 @@
       }
     },
     created() {
-      this.$store.commit('superCanSee'); //
+      this.$store.commit('adminCanSee'); //
       this.workNumber=localStorage.getItem('workIntentionName');
       console.log(this.workNumber)
       this.workId = this.$route.query.id;
@@ -173,15 +173,15 @@
       }
     },
     computed: {
-        isTypeTrue(){
-          let d=this.tableData;
-          for(let i in d){
-            if(d[i].type==1){
-               return true;
-            }
+      isTypeTrue(){
+        let d=this.tableData;
+        for(let i in d){
+          if(d[i].type==1){
+            return true;
           }
-          return false;
         }
+        return false;
+      }
     },
     methods: {
       handleSelect(item) {
@@ -215,7 +215,7 @@
               if(response.code==1){
                 rowData.type=rowData.type==0?1:0;
                 _this.$message.success('操作成功');
-               // _this.addLog(type==0?"确认报价单价格":"取消报价单价格","价格为："+rowData.total_price);
+                // _this.addLog(type==0?"确认报价单价格":"取消报价单价格","价格为："+rowData.total_price);
               }else {
                 _this.$message.error("操作失败，请重新操作！");
               }
@@ -261,9 +261,9 @@
             _this.$message.success('操作成功');
             _this.getData();
             if(_this.addId) {//编辑
-             // _this.addLog(_this.logStr.str1,_this.logStr.str2+'；'+'现总价：'+_this.form.total_price);
+              // _this.addLog(_this.logStr.str1,_this.logStr.str2+'；'+'现总价：'+_this.form.total_price);
             }else {
-             // _this.addLog(_this.logStr.str1+'('+_this.form.version_number+')','总价：'+_this.form.total_price);
+              // _this.addLog(_this.logStr.str1+'('+_this.form.version_number+')','总价：'+_this.form.total_price);
             }
             _this.editVisible=false;
           }else {

@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="rgb(166, 225, 245)"
+    <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#f7c2cc"
              text-color="#84361d" active-text-color="#e81176" unique-opened router>
       <template v-for="item in items" v-if="item.show">
         <template v-if="item.subs">
@@ -119,7 +119,7 @@
               {
                 index: '2-6',
                 title: '工作单管理',
-                show:this.$store.state.userInfo.type==1,
+                show:true,
                 subs: [
                   {
                     index: 'workLog',
@@ -128,7 +128,7 @@
                   },
                   {
                     index: 'workIntention',
-                    show:this.$store.state.userInfo.type==1,
+                    show:this.$store.state.userInfo.type==1||this.$store.state.userInfo.type==2,
                     title: '工作单意向'
                   }
                   // {
@@ -303,18 +303,18 @@
     },
     computed: {
       onRoutes() {
-       if(this.$route.path.lastIndexOf('-')>0){
-         return this.$route.path.split('-')[0].replace('/', '');
-       }else {
-         return this.$route.path.replace('/', '');
-       }
+        if(this.$route.path.lastIndexOf('-')>0){
+          return this.$route.path.split('-')[0].replace('/', '');
+        }else {
+          return this.$route.path.replace('/', '');
+        }
 
       }
     },
     created() {
       console.log(this.$store.state.userInfo)
 
-     // console.log(loginUser)
+      // console.log(loginUser)
       // 通过 Event Bus 进行组件间通信，来折叠侧边栏
       bus.$on('collapse', msg => {
         this.collapse = msg;
@@ -338,10 +338,10 @@
   }
 
   /*.el-menu-item:hover{*/
-    /*background-color: #f4b5d0 !important;*/
+  /*background-color: #f4b5d0 !important;*/
   /*}*/
   /*.el-submenu__title:hover{*/
-    /*background-color: #f4b5d0 !important;*/
+  /*background-color: #f4b5d0 !important;*/
   /*}*/
   .sidebar > ul {
     height: 100%;
