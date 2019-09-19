@@ -71,6 +71,10 @@
             <el-radio-group v-model="saveData.business_nature.other" @change="changeHandler(saveData.business_nature.other,'other')">
               <el-radio v-for="(other,index) in config.business.other" :label="index" :key="index">{{other}}</el-radio>
             </el-radio-group>
+            <div class="my-ywxz">个人</div>
+            <el-radio-group v-model="saveData.business_nature.personal" @change="changeHandler(saveData.business_nature.personal,'personal')">
+              <el-radio v-for="(personal,index) in config.business.personal" :label="index" :key="index">{{personal}}</el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="备注">
             <el-input v-model="saveData.remark"></el-input>
@@ -201,7 +205,7 @@
 </template>
 <style>
   .my-ywxz {
-  font-weight: bold;
+    color: #ff869b
   }
   .ganggao .el-input-group__append, .ganggao .el-input-group__prepend {
     padding: 0 10px
@@ -238,7 +242,6 @@
         },
         restaurants: [],
         restaurants2:[],
-        timeout:  null,
         saveData2: {
           work_nature:[],//工作性质
           name:'',
@@ -323,9 +326,9 @@
             _this.saveData.date=da.date;
             _this.saveData.business_nature=JSON.parse(da.business_nature);
             _this.saveData.remark=da.remark;
-           if(da.work_nature){
-             _this.saveData2.work_nature=JSON.parse(da.work_nature);
-           }
+            if(da.work_nature){
+              _this.saveData2.work_nature=JSON.parse(da.work_nature);
+            }
 
             _this.saveData2.name=da.name;
             _this.saveData2.gz_title=da.gz_title;
@@ -344,7 +347,6 @@
             _this.saveData2.qq=da.qq;
             _this.saveData2.msn=da.msn;
             _this.getCurData(_this.saveData.customer_id);
-
           } else {
             _this.$message.error(response.msg);
           }
@@ -358,50 +360,6 @@
           }
         }
         return false;
-      },
-      querySearchAsync(queryString, cb) {
-        let _this=this;
-        let restaurants =_this.restaurants2.arrs;
-        let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-        cb(results);
-      },
-      createStateFilter(queryString) {
-        return (state) => {
-          return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
-      getCurData(id){
-        let _this=this;
-        _this.restaurants2={
-          address:'',
-          arrs:[]
-        };
-        if(this.stepActive==1){
-          $_get('/Views/admin/getByIdDetail.aspx?T=customer&id='+id).then(function (response) {
-            if(response.code==1){
-              let data=response.data[0];
-                let arrs=JSON.parse(data.other_contacts)
-                for(let i in arrs){
-                    if(arrs[i].name){
-                      arrs[i].value=arrs[i].name;
-                      _this.restaurants2.arrs.push(arrs[i])
-                    }
-                }
-              _this.restaurants2.arrs.unshift({
-                value:data.key_contacts,
-                email:data.email,
-                mobil:data.mobile,
-                phone:data.phone,
-                qq:data.qq,
-                we_chat:data.we_chat,
-              })
-
-              _this.restaurants2.address=data.address
-            }else {
-              _this.$message.error(response.msg);
-            }
-          })
-        }
       },
       submitForm(saveData) {
         let _this=this;
@@ -506,12 +464,17 @@
         $_get('/Views/admin/business/getCustomerNumber.aspx').then(function (response) {
           if(response.code==1){
             _this.restaurants=response.data.list
-
           }else {
             _this.$message.error(response.msg);
           }
         })
 
+      },
+      handleSelect(item) {
+        let d=this.judgeRestaurants(item);
+        console.log(d);
+        this.saveData.customer_number=d.number;
+        this.saveData.customer_name=d.name;
       },
       handleSelect2(item){
         this.saveData2.phone=item.phone;
@@ -521,12 +484,50 @@
         this.saveData2.qq=item.qq;
         this.saveData2.msn=item.we_chat;
       },
-      handleSelect(item) {
-        let d=this.judgeRestaurants(item);
-        console.log(d);
-        this.saveData.customer_number=d.number;
-        this.saveData.customer_name=d.name;
-      }
+      querySearchAsync(queryString, cb) {
+        let _this=this;
+        let restaurants =_this.restaurants2.arrs;
+        let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+        cb(results);
+      },
+      createStateFilter(queryString) {
+        return (state) => {
+          return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      getCurData(id){
+        let _this=this;
+        _this.restaurants2={
+          address:'',
+          arrs:[]
+        };
+        if(this.stepActive==1){
+          $_get('/Views/admin/getByIdDetail.aspx?T=customer&id='+id).then(function (response) {
+            if(response.code==1){
+              let data=response.data[0];
+              let arrs=JSON.parse(data.other_contacts)
+              for(let i in arrs){
+                if(arrs[i].name){
+                  arrs[i].value=arrs[i].name;
+                  _this.restaurants2.arrs.push(arrs[i])
+                }
+              }
+              _this.restaurants2.arrs.unshift({
+                value:data.key_contacts,
+                email:data.email,
+                mobil:data.mobile,
+                phone:data.phone,
+                qq:data.qq,
+                we_chat:data.we_chat,
+              })
+
+              _this.restaurants2.address=data.address
+            }else {
+              _this.$message.error(response.msg);
+            }
+          })
+        }
+      },
     },
 
   }
