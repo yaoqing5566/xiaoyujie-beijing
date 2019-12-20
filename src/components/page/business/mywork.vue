@@ -77,7 +77,7 @@
       </div>
 
       <div class="pagination">
-        <el-pagination background @current-change="handleCurrentChange" :page-size="pageSize" layout="prev, pager, next" :total="count" :current-page.sync="pageIndex">
+        <el-pagination background  :current-page="pageIndex" @current-change="handleCurrentChange" :page-size="pageSize" layout="prev, pager, next" :total="count" :current-page.sync="pageIndex">
         </el-pagination>
       </div>
     </div>
@@ -355,6 +355,7 @@
         })
       },
       selectForm(){
+          this.pageIndex=1
         sessionStorage.setItem("myworkSelect",JSON.stringify(this.select))
         this.getData();
         this.workDialog=false;
