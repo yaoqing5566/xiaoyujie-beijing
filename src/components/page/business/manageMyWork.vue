@@ -172,7 +172,7 @@
                                       {{item.scheduling_date}}<br />{{item.start_time | formatTime("HH:mm")}}->{{item.end_time | formatTime("HH:mm")}}
                                     </div>
                                   </td>
-                                  <td><div class="cell">{{item.cms_supplier_name}}</div></td>
+                                  <td><div class="cell">{{item.sound_studio_name}}</div></td>
                                   <td><div class="cell">{{config.schedulingCategory[item.pb_category]}}</div></td>
                                   <td>
                                     <div class="cell"> {{item.remarks}}</div>
